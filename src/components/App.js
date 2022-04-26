@@ -7,6 +7,24 @@ import { useState } from 'react';
 // Función principal.
 function App() {
   const [quotes, setQuotes] = useState (quotesOfFriends);
+  const [newQuote, setNewQuote] = useState ({
+    quote: '',
+    character: ''
+  });
+  const handleNewQuote = (event) => {
+    setNewQuote ({
+      ...newQuote,
+      [event.target.id]: event.target.value,
+    });
+  }
+  const handleClick = (event) => {
+    event.preventDefault();
+    setQuotes([...quotes, newQuote]);
+    setNewQuote({
+      quote: '',
+      character: ''
+    });
+  };
   const quotesHtml = quotes
   
   .map((quote, index) => {
@@ -29,9 +47,23 @@ function App() {
       {quotesHtml}
     </section>
     <section className="addNewQuote">
-      <p>Frase</p><input type="text" className="quotesInput" /> 
-      <p>Personaje</p><input type="text" className="friendsInput" />
-      <button>Añadir nueva frase</button>
+      <p>Frase</p><input 
+            type="text" 
+            className="quotesInput" 
+            id="quote" 
+            onChange={handleNewQuote} 
+            value={newQuote.quote}/> 
+      <p>Personaje</p><input 
+            type="text" 
+            className="characterInput" 
+            id="character" 
+            onChange={handleNewQuote} 
+            value={newQuote.character} />
+      <input 
+        className="searchButton" 
+        type="submit" 
+        value="Añadir una nueva frase" 
+        onClick={handleClick}/>
     </section>
     </>
   );
