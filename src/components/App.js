@@ -1,18 +1,20 @@
 import { useEffect, useState } from 'react';
 
-import '../styles/App.scss';
 import quotesOfFriends from '../data/quotes.json'
-import { useState } from 'react';
+import getQuotes from '../services/fetch';
+import ls from '../services/localStorage'
+
+import '../styles/App.scss';
 
 // Función principal.
 function App() {
-  const [quotes, setQuotes] = useState (quotesOfFriends);
-
+  const [quotes, setQuotes] = useState(ls.get ("quotes", []));
+  const [quote, setQuote] = useState("");
+  const [character, setCharacter] = useState("");
   const [newQuote, setNewQuote] = useState ({
     quote: '',
     character: ''
   });
-
   const [filterQuote, setFilterQuote] = useState("");
   const [filterCharacter, setFilterCharacter] = useState("all");
 
@@ -25,6 +27,12 @@ function App() {
     }
   }, []);
 
+  const handleQuote = (ev) => {
+    setQuote(ev.target.value);
+  }
+  const handleCharacter = (ev) => {
+    setCharacter(ev.target.value)
+  }
   const handleNewQuote = (event) => {
     setNewQuote ({
       ...newQuote,
@@ -82,7 +90,7 @@ function App() {
         </label>
         <label className="filter__label" htmlFor="character">
             Filtrar por personaje
-            <select className="filter__select" value={filterCharacter} onChange={handleFilterCharacter}>
+            <select className="filter__select" value={filterCharacter} onChange={handleCharacter}>
               <option value="all">Todos</option>
               <option value="Ross">Ross</option>
               <option value="Monica">Monica</option>
@@ -107,8 +115,8 @@ function App() {
             type="text"
             name="quote"
             id="quote"
-            value={quoteObject.quote}
-            onChange={handleInputs}
+            value={newQuote.quote}
+            onChange={handleQuote}
           />
         </label>
         <label className="new-quote__label" htmlFor="character">
@@ -118,8 +126,8 @@ function App() {
             type="text"
             name="character"
             id="character"
-            value={quoteObject.character}
-            onChange={handleInputs}
+            value={newQuote.character}
+            onChange={handleQuote}
 
 
           />
